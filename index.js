@@ -9,7 +9,7 @@ app.use(cors());
 app.get('/download/:id', (req, res) => {
   const { id } = req.params;
 
-  const URL = 'https://www.youtube.com/watch?v=lyrEsJLQa-c';
+  const URL = `https://www.youtube.com/watch?v=${id}`;
 
   const stream = ytdl(URL, {
     filter: 'audioonly',
