@@ -10,6 +10,10 @@ app.get('/', (req, res) => {
   res.send('<h1>hello world</h1>');
 });
 
+app.get('/test', (req, res) => {
+  res.send('<h1>test world</h1>');
+});
+
 app.get('/download/:id', (req, res) => {
   const { id } = req.params;
 
@@ -20,8 +24,6 @@ app.get('/download/:id', (req, res) => {
   const stream = ytdl(URL, {
     filter: 'audioonly',
   });
-
-  res.write('test');
 
   stream.on('info', (videoInfo, formatInfo) => {
     res.setHeader(
@@ -34,6 +36,8 @@ app.get('/download/:id', (req, res) => {
   stream.pipe(res);
 });
 
-app.listen(4000, () => {
-  console.log('Server IS ON !!! At port 4000');
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
 });
