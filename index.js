@@ -13,6 +13,8 @@ app.get('/', (req, res) => {
 app.get('/download/:id', (req, res) => {
   const { id } = req.params;
 
+  console.log(`RECEIVED ${id}`);
+
   const URL = `https://www.youtube.com/watch?v=${id}`;
 
   const stream = ytdl(URL, {

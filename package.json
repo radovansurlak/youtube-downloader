@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "pm2": "^4.5.0",
     "youtube-mp3-downloader": "^0.7.6",
     "ytdl-core": "^4.1.4"
   },
