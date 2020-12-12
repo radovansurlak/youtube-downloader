@@ -21,6 +21,8 @@ app.get('/download/:id', (req, res) => {
     filter: 'audioonly',
   });
 
+  res.write('test');
+
   stream.on('info', (videoInfo, formatInfo) => {
     res.setHeader(
       'Content-disposition',
