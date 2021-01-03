@@ -6,6 +6,7 @@ const app = express();
 
 const corsOptions = {
   exposedHeaders: 'filename',
+  origin: '*',
 };
 
 app.use(cors(corsOptions));
