@@ -9,6 +9,8 @@ const corsOptions = {
   origin: '*',
 };
 
+const PORT = process.env.PORT || 4000;
+
 app.use(cors(corsOptions));
 
 app.post('/download/:id', (req, res) => {
@@ -31,6 +33,6 @@ app.post('/download/:id', (req, res) => {
   stream.pipe(res);
 });
 
-app.listen(4000, () => {
-  console.log('Server IS ON !!! At port 4000');
+app.listen(PORT, () => {
+  console.log(`Server IS ON !!! At port ${PORT}`);
 });
