@@ -4,9 +4,13 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  exposedHeaders: 'filename',
+};
 
-app.get('/download/:id', (req, res) => {
+app.use(cors(corsOptions));
+
+app.post('/download/:id', (req, res) => {
   const { id } = req.params;
 
   const URL = `https://www.youtube.com/watch?v=${id}`;
@@ -16,11 +20,11 @@ app.get('/download/:id', (req, res) => {
   });
 
   stream.on('info', (videoInfo, formatInfo) => {
-    res.setHeader(
-      'Content-disposition',
-      `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
-    );
-    res.setHeader('Content-type', `${formatInfo.mimeType}`);
+    res.set({
+      filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
+      'Content-disposition': `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
+      'Content-type': `${formatInfo.mimeType}`,
+    });
   });
 
   stream.pipe(res);
