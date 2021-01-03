@@ -1,6 +1,8 @@
 const express = require('express');
 const ytdl = require('ytdl-core');
 const cors = require('cors');
+const https = require('https');
+const urlLib = require('url');
 
 const app = express();
 
@@ -23,11 +25,18 @@ app.post('/download/:id', (req, res) => {
   });
 
   stream.on('info', (videoInfo, formatInfo) => {
-    res.set({
-      filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
-      'Content-disposition': `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
-      'Content-type': `${formatInfo.mimeType}`,
-    });
+    const parsed = urlLib.parse(formatInfo.url);
+    parsed.method = 'HEAD';
+    https
+      .request(parsed, (response) => {
+        res.set({
+          filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
+          'Content-disposition': `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
+          'Content-type': `${formatInfo.mimeType}`,
+          'Content-length': response.headers['content-length'],
+        });
+      })
+      .end();
   });
 
   stream.pipe(res);
