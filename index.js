@@ -39,7 +39,7 @@ app.post('/download/:id', (req, res) => {
         ).substring(0, 25);
 
         res.set({
-          filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
+          filename: `${fileName}.${formatInfo.container}`,
           'Content-disposition': `attachment; filename=${fileName}.${formatInfo.container}`,
           'Content-type': `${formatInfo.mimeType}`,
           'Content-length': response.headers['content-length'],
