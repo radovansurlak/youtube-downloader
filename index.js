@@ -11,6 +11,10 @@ const corsOptions = {
   origin: '*',
 };
 
+function sanitizeFileName(filename) {
+  return filename.replace(/[^a-zA-Z0-9]/g, '');
+}
+
 const PORT = process.env.PORT || 4000;
 
 app.use(cors(corsOptions));
@@ -30,15 +34,13 @@ app.post('/download/:id', (req, res) => {
     parsed.method = 'HEAD';
     https
       .request(parsed, (response) => {
-        console.log({
-          filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
-          'Content-disposition': `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
-          'Content-type': `${formatInfo.mimeType}`,
-          'Content-length': response.headers['content-length'],
-        });
+        const fileName = sanitizeFileName(
+          videoInfo.videoDetails.title,
+        ).substring(0, 25);
+
         res.set({
           filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
-          'Content-disposition': `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
+          'Content-disposition': `attachment; filename=${fileName}.${formatInfo.container}`,
           'Content-type': `${formatInfo.mimeType}`,
           'Content-length': response.headers['content-length'],
         });
