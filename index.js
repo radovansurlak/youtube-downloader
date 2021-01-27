@@ -12,7 +12,7 @@ const corsOptions = {
 };
 
 function sanitizeFileName(filename) {
-  return filename.replace(/[^a-zA-Z0-9]/g, '');
+  return filename.replace(/[^a-zA-Z0-9]/g, '').substring(0, 25);
 }
 
 const PORT = process.env.PORT || 4000;
@@ -34,9 +34,7 @@ app.post('/download/:id', (req, res) => {
     parsed.method = 'HEAD';
     https
       .request(parsed, (response) => {
-        const fileName = sanitizeFileName(
-          videoInfo.videoDetails.title,
-        ).substring(0, 25);
+        const fileName = sanitizeFileName(videoInfo.videoDetails.title);
 
         res.set({
           filename: `${fileName}.${formatInfo.container}`,
