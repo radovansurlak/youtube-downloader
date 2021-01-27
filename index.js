@@ -26,9 +26,16 @@ app.post('/download/:id', (req, res) => {
 
   stream.on('info', (videoInfo, formatInfo) => {
     const parsed = urlLib.parse(formatInfo.url);
+
     parsed.method = 'HEAD';
     https
       .request(parsed, (response) => {
+        console.log({
+          filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
+          'Content-disposition': `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
+          'Content-type': `${formatInfo.mimeType}`,
+          'Content-length': response.headers['content-length'],
+        });
         res.set({
           filename: `${videoInfo.videoDetails.title}.${formatInfo.container}`,
           'Content-disposition': `attachment; filename=${videoInfo.videoDetails.title}.${formatInfo.container}`,
